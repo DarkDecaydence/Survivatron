@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Survivatron.MapSpecs
 {
-    interface IMap
+    public interface IMap
     {
         IMap GetZone(Rectangle rect);
         IMap SetZone(Vector2 origin, IMap newMap);

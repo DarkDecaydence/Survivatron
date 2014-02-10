@@ -11,6 +11,7 @@ using Survivatron.MapSpecs;
 using Survivatron.GameObjects;
 using Survivatron.GameObjects.Dynamics;
 using Survivatron.Mastermind;
+using Survivatron.PlayerControllers;
 #endregion
 
 namespace Survivatron
@@ -48,7 +49,7 @@ namespace Survivatron
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            Map gameMap = new Map((int)(14400 / 18), (int)(10800 / 18), tileHandlers);
+            Map gameMap = new Map((int)(14400 / 18), (int)(10800 / 18));
             mastermind = MastermindAI.Instance;
 
             Frame gameFrame = new Frame(gameMap, 0, 0,
@@ -57,9 +58,11 @@ namespace Survivatron
             players = new PlayerController[] {new PlayerController(1, gameFrame)};
             Dynamic[] dynams = { players[0].Character/*, mastermind.AddSheep(), mastermind.AddSheep()*/ };
 
-            MapController.Initialize(gameMap);
-            MapController.AddDynamics(gameMap, new Vector2(5, 5), ref dynams);
-            MapController.AddTrees(gameMap, 70);
+            MapController mc = MapController.GetInstance();
+
+            mc.Initialize(gameMap);
+            mc.AddDynamics(gameMap, new Vector2(5, 5), ref dynams);
+            mc.AddTrees(gameMap, 70);
 
             /* GameFrame calculations: */
             /*

@@ -24,6 +24,9 @@ namespace Survivatron.MapSpecs
             return MCInstance;
         }
 
+        public IMap GetZone(Rectangle rect)
+        { return Current.GetZone(rect); }
+
         private MapController(Map map)
         {
             Dynamic.Ready += ReadyUp;
@@ -32,11 +35,11 @@ namespace Survivatron.MapSpecs
 
         /* Static class. */
         public static event CallEventHandler CallOut;
-        public static Map Current { get; set; }
-        public static List<GameObject> MapObjects { get; private set; }
+        public Map Current { get; set; }
+        public List<GameObject> MapObjects { get; private set; }
         private static Dictionary<GOID, int[]> actionQueue = new Dictionary<GOID, int[]>();
 
-        public static void Initialize(Map map)
+        public void Initialize(Map map)
         {
             Dynamic.Ready += ReadyUp;
             Current = map;
@@ -65,7 +68,7 @@ namespace Survivatron.MapSpecs
 
         // Frequency is measured in the chance that a tree will appear.
         // A tree cannot appear on a row that already contains a solid.
-        public static void AddTrees(Map map, int frequency)
+        public void AddTrees(Map map, int frequency)
         {
             if (frequency < 1) { return; }
             Random rand = new Random();
@@ -84,7 +87,7 @@ namespace Survivatron.MapSpecs
             }
         }
 
-        public static void AddDynamics(Map map, Vector2 start, ref Dynamic[] dynamics)
+        public void AddDynamics(Map map, Vector2 start, ref Dynamic[] dynamics)
         {
             Vector2 position = start;
             foreach (Dynamic d in dynamics)
@@ -96,10 +99,10 @@ namespace Survivatron.MapSpecs
             }
         }
 
-        public static void AddObject(Vector2 position, GameObject gameObject)
+        public void AddObject(Vector2 position, GameObject gameObject)
         { Current.columns[(int)position.X].rows[(int)position.Y].objects.Add(gameObject); }
 
-        public static GameObject GetObject(GOID ID)
+        public GameObject GetObject(GOID ID)
         {
             foreach (GameObject o in MapObjects)
                 if (ID.Equals(o)) { return o; }
@@ -107,7 +110,7 @@ namespace Survivatron.MapSpecs
             return null;
         }
 
-        public static void MoveObject(GOID ID, Vector2 moveVector)
+        public void MoveObject(GOID ID, Vector2 moveVector)
         {
             foreach (GameObject f in MapObjects)
             {
@@ -136,7 +139,7 @@ namespace Survivatron.MapSpecs
             }
         }
 
-        private static void ReadyUp(Dynamic sender, ActionEventArgs e)
+        private void ReadyUp(Dynamic sender, ActionEventArgs e)
         {
             if (actionQueue.ContainsKey(sender.ID))
             {

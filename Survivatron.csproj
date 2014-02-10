@@ -80,8 +80,8 @@
     <Compile Include="Mastermind\MastermindAI.cs" />
     <Compile Include="Mastermind\Tactics\Peaceful.cs" />
     <Compile Include="Mastermind\Tactics\Tactic.cs" />
-    <Compile Include="PlayerController\PlayerController.cs" />
-    <Compile Include="PlayerController\IPlayerController.cs" />
+    <Compile Include="PlayerControllers\PlayerController.cs" />
+    <Compile Include="PlayerControllers\IPlayerController.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewFrame\TileHandler.cs" />

@@ -34,16 +34,16 @@ namespace Survivatron
         public Rectangle getChar(char character)
         {
             int offset = (int)character;
-            return getRect((int)(offset / rows), (offset % columns), tileEdge);
+            return getRect((offset % columns), (int)(offset / rows), tileEdge);
         }
 
         // Converts from tile coordinates to pixel coordinates.
-        private Rectangle getRect(int row, int col, int edge)
+        private Rectangle getRect(int col, int row, int edge)
         {
-            int offX, offY;
-            offX = col * edge; // Offset X in pixels
-            offY = row * edge; // Offset Y in pixels
-            return new Rectangle(offX, offY, edge, edge); 
+            return new Rectangle(
+                (col*edge), (row*edge),
+                edge, edge
+                ); 
         }
     }
 }

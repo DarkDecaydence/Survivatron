@@ -20,9 +20,11 @@ namespace Survivatron.MapSpecs
         {
             Column cropped = new Column(finish-start);
 
-            int j = 0;
-            for (int i = start; i < finish; i++)
-            { cropped.rows[j++] = rows[i]; }
+            Array.Copy((Array)rows, start, (Array)cropped.rows, finish, finish - start);
+
+            //int j = 0;
+            //for (int i = start; i < finish; i++)
+            //{ cropped.rows[j++] = rows[i]; }
 
             return cropped;
         }

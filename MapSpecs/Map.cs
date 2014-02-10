@@ -16,15 +16,27 @@ namespace Survivatron.MapSpecs
      * The mapObjects list is a list of dynamic objects on the map; i.e. everything but the floors.
      * This list is used to quickly find the position of different objects, and move them.
      */
-    public class Map
+    public class Map : IMap
     {
         public Column[] columns { get; set; }
-        private TileHandler[] tileHandlers;
 
-        public Map(int dimX, int dimY, TileHandler[] tileHandlers)
+        public override IMap GetZone(Rectangle rect)
+        { return (IMap)CroppedMap(rect); }
+
+        public override IMap SetZone(Vector2 origin, IMap newMap)
+        {
+            return null;
+        }
+
+        public override IMap ProcessTurn()
+        {
+            return null;
+        }
+
+        public Map(int dimX, int dimY)
         {
             columns = new Column[dimX];
-            this.tileHandlers = tileHandlers;
+            //this.tileHandlers = tileHandlers;
             //mapObjects = new List<GameObject>();
 
             for (int i = 0; i < dimX; i++)
@@ -34,7 +46,7 @@ namespace Survivatron.MapSpecs
         // Returns a cropped part of the current map, with the objects related to the cropped map.
         public Map CroppedMap(Rectangle rect)
         {
-            Map cropped = new Map(0, 0, tileHandlers);
+            Map cropped = new Map(0, 0);
             cropped.columns = Crop(rect);
             //cropped.mapObjects = MapController.FindObjects(cropped.columns);
             return cropped;
@@ -61,35 +73,5 @@ namespace Survivatron.MapSpecs
 
         public Row GetRow(int x, int y)
         { return columns[x].rows[y]; }
-
-        //---- Draw ----
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Begin();
-
-            int objectsCount;
-            for (int i = 0; i < columns.Length; i++)
-            {
-                for (int j = 0; j < columns[i].rows.Length; j++)
-                {
-                    objectsCount = columns[i].rows[j].objects.Count;
-                    GameObject curObject = columns[i].rows[j].objects[0];
-                    spriteBatch.Draw(tileHandlers[0].tileSet, new Vector2(i * 18, j * 18), tileHandlers[0].getChar(curObject.Representation), Color.Green);
-                    if (objectsCount > 1)
-                    {
-                        curObject = columns[i].rows[j].objects[objectsCount - 1];
-                        switch (curObject.FType)
-                        {
-                            case GameObjectType.BASIC: spriteBatch.Draw(tileHandlers[0].tileSet, new Vector2(i * 18, j * 18), tileHandlers[0].getChar(curObject.Representation), Color.White); break;
-                            case GameObjectType.PLAYER: spriteBatch.Draw(tileHandlers[1].tileSet, new Vector2(i * 18, j * 18), tileHandlers[1].getChar(curObject.Representation), Color.White); break;
-                            case GameObjectType.CRITTER: spriteBatch.Draw(tileHandlers[2].tileSet, new Vector2(i * 18, j * 18), tileHandlers[2].getChar(curObject.Representation), Color.White); break;
-                        }
-                    }
-                }
-            }
-
-            spriteBatch.End();
-        }
     }
 }
