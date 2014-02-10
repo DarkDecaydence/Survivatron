@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Survivatron.GameObjects;
 using Survivatron.GameObjects.Statics;
+using Microsoft.Xna.Framework;
 
 namespace Survivatron.MapSpecs
 {
@@ -27,12 +28,24 @@ namespace Survivatron.MapSpecs
         public override bool Equals(object obj)
         {
             Row castR = (Row)obj;
+            // Checks if cast is null.
+            if (castR == null)
+                return false;
+
+            // Checks if objects are equal.
             int i = 0;
             if (objects.Count != castR.objects.Count) { return false; }
             for (GameObject gObj = objects[i]; i < objects.Count; i++)
                 if (!gObj.Equals(castR.objects[i]))
                     return false;
+
             return true;
+        }
+
+        public Row SetZone(Row newRow)
+        {
+            objects = newRow.objects;
+            return this;
         }
     }
 }

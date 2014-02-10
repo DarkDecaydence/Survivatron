@@ -21,7 +21,10 @@ namespace Survivatron.MapSpecs
         /* Singleton constructor and get. */
         public static MapController MCInstance { get; private set; }
         public static MapController GetInstance()
-        { return MCInstance; }
+        {
+            if (MCInstance == null)
+            { throw new Exception("MCInstance is null. Check if constructed."); }
+            return MCInstance; }
 
         public static MapController Construct(Map map)
         {
@@ -39,6 +42,9 @@ namespace Survivatron.MapSpecs
         /* Interface Methods */
         public virtual IMap GetZone(Rectangle rect)
         { return Current.GetZone(rect); }
+
+        public virtual Vector2 GetDimensions()
+        { return new Vector2(Current.columns.Length, Current.columns[0].rows.Length); }
 
         public virtual GameObject GetGameObject(GOID goid)
         { return MapObjects.Find(new Predicate<GameObject>(gObj => gObj.ID.Equals(goid))); }
@@ -94,7 +100,7 @@ namespace Survivatron.MapSpecs
             }
         }
 
-        public void AddDynamics(Map map, Vector2 start, ref Dynamic[] dynamics)
+        public void AddDynamics(Vector2 start, ref Dynamic[] dynamics)
         {
             Vector2 position = start;
             foreach (Dynamic d in dynamics)

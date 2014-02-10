@@ -25,7 +25,6 @@ namespace Survivatron
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Texture2D[] tilesets = new Texture2D[3];
-        private TileHandler[] tileHandlers = new TileHandler[3];
         private PlayerController[] players;
         private MastermindAI mastermind;
 
@@ -51,17 +50,17 @@ namespace Survivatron
         {
             // TODO: Add your initialization logic here
             Map gameMap = new Map((int)(14400 / 18), (int)(10800 / 18));
+            MapController mc = MapController.Construct(gameMap);
             mastermind = MastermindAI.Instance;
 
-            ViewFrame gameFrame = new ViewFrame(gameMap, 0, 0,
+            ViewFrame gameFrame = new ViewFrame(0, 0,
                 (int)Math.Round((double)(graphics.PreferredBackBufferWidth - 128) / 18.0),
                 (int)Math.Round((double)(graphics.PreferredBackBufferHeight - 96) / 18.0));
             players = new PlayerController[] {new PlayerController(1, gameFrame)};
             Dynamic[] dynams = { players[0].Character/*, mastermind.AddSheep(), mastermind.AddSheep()*/ };
 
-            MapController mc = MapController.Construct(gameMap);
 
-            mc.AddDynamics(gameMap, new Vector2(5, 5), ref dynams);
+            mc.AddDynamics(new Vector2(5, 5), ref dynams);
             mc.AddTrees(gameMap, 70);
 
             /* GameFrame calculations: */
@@ -92,8 +91,7 @@ namespace Survivatron
             tilesets[1] = Content.Load<Texture2D>("dwarves");
             tilesets[2] = Content.Load<Texture2D>("critters");
 
-            for (int i = 0; i < 3; i++)
-            { tileHandlers[i] = new TileHandler(tilesets[i], 18); }
+            TileHandler.Construct(tilesets, 18);
         }
 
         /// <summary>

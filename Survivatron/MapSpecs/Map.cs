@@ -27,7 +27,12 @@ namespace Survivatron.MapSpecs
 
         public virtual IMap SetZone(Vector2 origin, IMap newMap)
         {
-            return null;
+            for (int i = (int)(origin.X - 1.0f);
+                i < (columns.Length + (int)(origin.X - 1.0f));
+                i++)
+            { columns[i].SetZone((int)(origin.Y - 1.0f), ((Map)newMap).columns[i]); }
+
+            return this;
         }
 
         public virtual IMap ProcessTurn()
@@ -37,9 +42,15 @@ namespace Survivatron.MapSpecs
 
         public override bool Equals(object obj)
         {
+            //Checks if cast is possible.
             Map mapCast = (Map)obj;
-            if (columns.Length != mapCast.columns.Length) { return false; }
-            else
+            if (mapCast == null)
+                return false;
+
+            //Checks if the length is equal.
+            if (columns.Length != mapCast.columns.Length)
+            { return false; }
+            else // Checks recursively if the columns are equal
             {
                 int i = 0;
                 for (Column c = columns[0]; i < columns.Length; i++)

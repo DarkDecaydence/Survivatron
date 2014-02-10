@@ -13,24 +13,23 @@ namespace Survivatron.ViewFrames
     public class ViewFrame : IViewFrame
     {
         public Map curMap { get; set; }
-        public Map worldMap { get; set; }
         public Rectangle dimensions { get; set; } // This is the dimensions in rows, not pixels.
-        private TileHandler[] tileHandlers;
+        private MapController mc;
 
         //Frame requires the world map to create a crop.
-        public ViewFrame(Map map, Rectangle dimensions)
+        public ViewFrame(Rectangle dimensions)
         {
             this.dimensions = dimensions;
-            worldMap = map;
-            curMap = worldMap.CroppedMap(dimensions);
+            mc = MapController.GetInstance();
+            curMap = (Map)mc.GetZone(dimensions);
         }
 
-        public ViewFrame(Map map, int x, int y, int width, int height)
-            : this(map, new Rectangle(x, y, width, height))
+        public ViewFrame(int x, int y, int width, int height)
+            : this(new Rectangle(x, y, width, height))
         { }
 
-        public ViewFrame(Map map)
-            : this(map, new Rectangle())
+        public ViewFrame()
+            : this(new Rectangle())
         { }
 
         public void MoveFrame(int x, int y)
@@ -38,13 +37,16 @@ namespace Survivatron.ViewFrames
             var tempDim = dimensions;
             tempDim.Offset(x, y);
 
-            if (tempDim.X < 0 || (tempDim.X + tempDim.Width) > (worldMap.columns.Length))
+            mc = MapController.GetInstance();
+            Vector2 worldMapDims = mc.GetDimensions();
+
+            if (tempDim.X < 0 || (tempDim.X + tempDim.Width) >= worldMapDims.X)
                 return;
-            if (tempDim.Y < 0 || (tempDim.Y + tempDim.Height) > worldMap.columns[tempDim.X + tempDim.Width - 1].rows.Length) // X + width - 1 required to avoid "Early-end-of-map" bug.
+            if (tempDim.Y < 0 || (tempDim.Y + tempDim.Height) >= worldMapDims.Y)
                 return;
 
             dimensions = tempDim;
-            curMap = worldMap.CroppedMap(dimensions);
+            curMap = (Map)mc.GetZone(dimensions);
         }
 
         public void MoveFrame(Vector2 moveVector)
@@ -59,32 +61,44 @@ namespace Survivatron.ViewFrames
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            MapController mc = MapController.GetInstance();
+            TileHandler[] ths = TileHandler.Instances;
+            curMap = (Map)mc.GetZone(dimensions);
+
             spriteBatch.Begin();
 
-            int objectsCount;
-            for (int i = 0; i < curMap.columns.Length; i++)
+            for (int i = 0; i < dimensions.Width; i++)
             {
-                for (int j = 0; j < curMap.columns[i].rows.Length; j++)
+                for (int j = 0; j < dimensions.Height; j++)
                 {
-                    objectsCount = curMap.columns[i].rows[j].objects.Count;
-                    GameObject curObject = curMap.columns[i].rows[j].objects[0];
-                    spriteBatch.Draw(tileHandlers[0].tileSet, new Vector2(i * 18, j * 18), tileHandlers[0].getChar(curObject.Representation), Color.Green);
-                    foreach (GameObject gameObj in curMap.columns[i].rows[j].objects)
+                    /* Current position. */
+                    Row curField = curMap.columns[i].rows[j];
+                    Vector2 drawPos = new Vector2(i * ths[0].TileEdge, j * ths[0].TileEdge);
+
+                    /* Draws green floor. */
+                    GameObject curObject = curField.objects[0];
+                    spriteBatch.Draw(ths[0].TileSet, drawPos, ths[0].getChar(curObject.Representation), Color.Green);
+
+                    // Draws top object in the current field
+                    if (curField.objects.Count > 1)
                     {
-                        switch (gameObj.FType)
+                        curObject = curField.objects[curField.objects.Count - 1];
+                        TileHandler curTH;
+                        switch (curObject.FType)
                         {
-                            case GameObjectType.BASIC: spriteBatch.Draw(tileHandlers[0].tileSet,
-                                new Vector2(i * 18, j * 18), tileHandlers[0].getChar(gameObj.Representation), Color.Transparent); break;
-                            case GameObjectType.PLAYER: spriteBatch.Draw(tileHandlers[1].tileSet,
-                                new Vector2(i * 18, j * 18), tileHandlers[1].getChar(gameObj.Representation), Color.Transparent); break;
-                            case GameObjectType.CRITTER: spriteBatch.Draw(tileHandlers[2].tileSet,
-                                new Vector2(i * 18, j * 18), tileHandlers[2].getChar(gameObj.Representation), Color.Transparent); break;
+                            case GameObjectType.BASIC:      curTH = ths[0]; break;
+                            case GameObjectType.PLAYER:     curTH = ths[1]; break;
+                            case GameObjectType.CRITTER:    curTH = ths[2]; break;
+                            default:                        curTH = ths[0]; break;
                         }
+
+                        spriteBatch.Draw(curTH.TileSet, drawPos, curTH.getChar(curObject.Representation), Color.White);
                     }
                 }
             }
 
             spriteBatch.End();
+
         }
     }
 }

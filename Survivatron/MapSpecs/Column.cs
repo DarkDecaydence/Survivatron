@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace Survivatron.MapSpecs
 {
     public class Column
     {
-        public Row[] rows;
+        public Row[] rows { get; set; }
 
         public Column(int length)
         {
@@ -27,14 +28,28 @@ namespace Survivatron.MapSpecs
             return cropped;
         }
 
+        public Column SetZone(int start, Column newColumn)
+        {
+            for (int i = start; i < (start + newColumn.rows.Length); i++)
+                rows[i] = newColumn.rows[i];
+
+            return this;
+        }
+
         public override bool Equals(object obj)
         {
             Column cCast = (Column)obj;
+            // Checks if cast is null.
+            if (cCast == null)
+                return false;
+
+            // Checks recusively if rows are equal.
             int i = 0;
             if (rows.Length != cCast.rows.Length) { return false; }
             for (Row r = rows[i]; i < rows.Length; i++)
                 if (!r.Equals(cCast.rows[i]))
                     return false;
+
             return true;
         }
     }
