@@ -1,0 +1,268 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Survivatron.ViewFrames.ViewFrame" Collapsed="true">
+    <Position X="5.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAQAAAAAgAAAgAAAAAAAAABAAAAAAACAAAAAAA=</HashCode>
+      <FileName>ViewFrames\ViewFrame.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Survivatron.ViewFrameHandler" Collapsed="true">
+    <Position X="5.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewFrames\ViewFrameHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.Game1" Collapsed="true">
+    <Position X="0.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEEAAAAAAAwAAAAAAAAAAAAAAAAgAIAAAIAAAABQ=</HashCode>
+      <FileName>Game1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.Program" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.ViewFrames.TileHandler" Collapsed="true">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAgAAIAIBAAAAAAAgAAAAASAAAAAAAAAA=</HashCode>
+      <FileName>ViewFrames\TileHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.GameActions.ActionHandler" Collapsed="true">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>GameActions\ActionHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.GameActions.GameAction" Collapsed="true">
+    <Position X="8.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameActions\GameAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.GameEvents.ActionEventArgs" Collapsed="true">
+    <Position X="13.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameEvents\ActionEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.GameEvents.CallEventArgs" Collapsed="true">
+    <Position X="8.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameEvents\CallEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.GameEvents.MoveEventArgs" Collapsed="true">
+    <Position X="11.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameEvents\MoveEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.GameObjects.Dynamics.Dynamic" Collapsed="true">
+    <Position X="6" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAgAEgAAAAEAAgAAABAAQIAAAAAAgAAAA=</HashCode>
+      <FileName>GameObjects\Dynamics\Dynamic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.GameObjects.Dynamics.DynamicAI" Collapsed="true">
+    <Position X="7.25" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameObjects\Dynamics\DynamicAI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.GameObjects.Dynamics.PlayerCharacter" Collapsed="true">
+    <Position X="5" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAgAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameObjects\Dynamics\PlayerCharacter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.GameObjects.Dynamics.Sheep" Collapsed="true">
+    <Position X="7.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAEAAgAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameObjects\Dynamics\Sheep.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.GameObjects.Statics.Floor" Collapsed="true">
+    <Position X="0.5" Y="8.75" Width="1.5" />
+    <InheritanceLine Type="Survivatron.GameObjects.GameObject" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.5" Y="8.062" />
+        <Point X="4.5" Y="8.375" />
+        <Point X="1.25" Y="8.375" />
+        <Point X="1.25" Y="8.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAoAAAAAAAAAgAAgAAAAAAAAAAAAAAAIAAAAAAgEAAA=</HashCode>
+      <FileName>GameObjects\Floor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.GameObjects.Statics.Static" Collapsed="true">
+    <Position X="2.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAgAAgAAAAAAAAAAAAAAAIAAAAAAgAAAA=</HashCode>
+      <FileName>GameObjects\Statics\Static.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.GameObjects.Statics.Tree" Collapsed="true">
+    <Position X="2.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>GameObjects\Statics\Tree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.GameObjects.GameObject" Collapsed="true">
+    <Position X="3.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAgAAgAAAAAAAAAAAAAAAIAAAAAAgAAAA=</HashCode>
+      <FileName>GameObjects\GameObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.MapSpecs.Column" Collapsed="true">
+    <Position X="0.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAgABAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>MapSpecs\Column.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.MapSpecs.Map" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQgAABAAAAAAAAgAAAACAAEAAAAgAACAAAAAAAAAA=</HashCode>
+      <FileName>MapSpecs\Map.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Survivatron.MapSpecs.MapController" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAJAAQAoAAAAACACAAABIABAABAAQwogAQAAIA=</HashCode>
+      <FileName>MapSpecs\MapController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Survivatron.MapSpecs.Row" Collapsed="true">
+    <Position X="0.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAgAAAAAAAAQAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>MapSpecs\Row.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.Mastermind.MastermindAI" Collapsed="true">
+    <Position X="4" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIQEAAAAQAAAEAAAAAAAgAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Mastermind\MastermindAI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Survivatron.PlayerControllers.PlayerController" Collapsed="true">
+    <Position X="4" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAQAAACAAAAAAAAAAAAAAAIAIAQAAAAAABAAAAAACCA=</HashCode>
+      <FileName>PlayerControllers\PlayerController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Struct Name="Survivatron.GOID" Collapsed="true">
+    <Position X="3.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAgAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>GameObjects\GOID.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="Survivatron.Mastermind.Tactics.Tactic" Collapsed="true">
+    <Position X="8.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Mastermind\Tactics\Tactic.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Survivatron.PlayerControllers.IPlayerController">
+    <Position X="10.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>PlayerControllers\IPlayerController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Survivatron.MapSpecs.IMap">
+    <Position X="12" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQgAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MapSpecs\IMap.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Survivatron.MapSpecs.IMapController">
+    <Position X="12" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAgAgAAAAIA=</HashCode>
+      <FileName>MapSpecs\IMapController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Survivatron.ViewFrames.IViewFrame">
+    <Position X="10.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewFrames\IViewFrame.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Survivatron.GameActions.ActionEnum" Collapsed="true">
+    <Position X="10" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>GameActions\ActionEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Survivatron.GameObjects.GameObjectType" Collapsed="true">
+    <Position X="5.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>GameObjects\GameObjectType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Survivatron.Mastermind.Tactics.TacticType" Collapsed="true">
+    <Position X="10" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAAAAAAAEAAAgAAAAAAAA=</HashCode>
+      <FileName>Mastermind\Tactics\Tactic.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="Survivatron.GameEvents.MoveEventHandler" Collapsed="true">
+    <Position X="11.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>GameEvents\GameEventHandler.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Survivatron.GameEvents.ReadyEventHandler" Collapsed="true">
+    <Position X="13.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAEAAAAA=</HashCode>
+      <FileName>GameEvents\GameEventHandler.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Survivatron.GameEvents.CallEventHandler" Collapsed="true">
+    <Position X="8.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameEvents\GameEventHandler.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
