@@ -27,10 +27,11 @@ namespace Survivatron.MapSpecs
 
         public virtual IMap SetZone(Vector2 origin, IMap newMap)
         {
-            for (int i = (int)(origin.X - 1.0f);
-                i < (columns.Length + (int)(origin.X - 1.0f));
+            int j = 0;
+            for (int i = ((int)origin.X);
+                i < (((Map)newMap).columns.Length + ((int)origin.X));
                 i++)
-            { columns[i].SetZone((int)(origin.Y - 1.0f), ((Map)newMap).columns[i]); }
+            { columns[i].SetZone((int)origin.Y, ((Map)newMap).columns[j++]); }
 
             return this;
         }
@@ -39,6 +40,9 @@ namespace Survivatron.MapSpecs
         {
             return null;
         }
+
+        public Vector2 GetDimensions()
+        { return new Vector2(columns.Length, columns[0].rows.Length); }
 
         public override bool Equals(object obj)
         {
@@ -53,7 +57,7 @@ namespace Survivatron.MapSpecs
             else // Checks recursively if the columns are equal
             {
                 int i = 0;
-                for (Column c = columns[0]; i < columns.Length; i++)
+                for (Column c = columns[i]; i < columns.Length; i++)
                     if (!c.Equals(mapCast.columns[i]))
                         return false;
             }
@@ -85,10 +89,10 @@ namespace Survivatron.MapSpecs
         {
             if (width < 1 || height < 1)
                 return null;
-            if (x < 0 || (x + width) > columns.Length)
-                return null;
-            if (y < 0 || (y + height) > columns[x + width - 1].rows.Length) // x + width - 1 required, since previous calls are not safely within column length.
-                return null;
+            if (x < 0) return Crop(0, y, width, height);
+            if ((x + width) > columns.Length) return Crop((columns.Length - (x + width)), y, width, height);
+            if (y < 0) return Crop(x, 0, width, height);
+            if ((y + height) > columns[0].rows.Length) return Crop(x, (columns[0].rows.Length - (y + height)), width, height);
 
             Column[] cropped = new Column[width];
             int j = 0;

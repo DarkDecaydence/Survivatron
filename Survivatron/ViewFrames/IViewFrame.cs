@@ -7,8 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Survivatron.ViewFrames
 {
-    interface IViewFrame
+    public interface IViewFrame
     {
         void Draw(SpriteBatch spriteBatch);
+        IViewFrame Pan(Vector2 direction);
     }
 }

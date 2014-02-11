@@ -44,16 +44,17 @@ namespace Survivatron.MapSpecs
         { return Current.GetZone(rect); }
 
         public virtual Vector2 GetDimensions()
-        { return new Vector2(Current.columns.Length, Current.columns[0].rows.Length); }
+        { return Current.GetDimensions(); }
 
+        // Onlt gets and sets to the gameobject list, not to the map itself.
         public virtual GameObject GetGameObject(GOID goid)
         { return MapObjects.Find(new Predicate<GameObject>(gObj => gObj.ID.Equals(goid))); }
 
         public virtual bool SetGameObject(GameObject gameObject)
         {
             GameObject target = MapObjects.Find(new Predicate<GameObject>(gObj => gObj.ID.Equals(gameObject.ID)));
-            if (target != null) { return true; }
-            else { return false; }
+            if (target != null) { MapObjects.Remove(target); MapObjects.Add(gameObject); return true; }
+            else { MapObjects.Add(gameObject); return true; }
         }
 
         /* Static class. */
@@ -100,25 +101,21 @@ namespace Survivatron.MapSpecs
             }
         }
 
-        public void AddDynamics(Vector2 start, ref Dynamic[] dynamics)
+        public void AddDynamic(Vector2 position, ref Dynamic dynamic)
         {
-            Vector2 position = start;
-            foreach (Dynamic d in dynamics)
-            {
-                AddObject(position, d);
-                MapObjects.Add(d);
-                d.Position = new Vector2(position.X, position.Y);
-                position = Vector2.Add(position, new Vector2(3,3));
-            }
+            AddObject(position, dynamic);
+            MapObjects.Add(dynamic);
+            dynamic.Position = new Vector2(position.X, position.Y);
+            position = Vector2.Add(position, new Vector2(3,3));
         }
 
-        public void AddObject(Vector2 position, GameObject gameObject)
+        private void AddObject(Vector2 position, GameObject gameObject)
         { Current.columns[(int)position.X].rows[(int)position.Y].objects.Add(gameObject); }
 
         public GameObject GetObject(GOID ID)
         {
             foreach (GameObject o in MapObjects)
-                if (ID.Equals(o)) { return o; }
+                if (ID.Equals(o.ID)) { return o; }
 
             return null;
         }

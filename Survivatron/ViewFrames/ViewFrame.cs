@@ -16,12 +16,19 @@ namespace Survivatron.ViewFrames
         public Rectangle dimensions { get; set; } // This is the dimensions in rows, not pixels.
         private MapController mc;
 
+        /* Interface methods: */
+        public virtual IViewFrame Pan(Vector2 direction)
+        {
+            MoveFrame(direction);
+            return this;
+        }
+
         //Frame requires the world map to create a crop.
         public ViewFrame(Rectangle dimensions)
         {
-            this.dimensions = dimensions;
             mc = MapController.GetInstance();
             curMap = (Map)mc.GetZone(dimensions);
+            dimensions = CorrectDimensions(dimensions);
         }
 
         public ViewFrame(int x, int y, int width, int height)
@@ -37,7 +44,6 @@ namespace Survivatron.ViewFrames
             var tempDim = dimensions;
             tempDim.Offset(x, y);
 
-            mc = MapController.GetInstance();
             Vector2 worldMapDims = mc.GetDimensions();
 
             if (tempDim.X < 0 || (tempDim.X + tempDim.Width) >= worldMapDims.X)
@@ -53,7 +59,27 @@ namespace Survivatron.ViewFrames
         { MoveFrame((int)moveVector.X, (int)moveVector.Y); }
 
         public void ChangeFrame(Rectangle dimensions)
-        { this.dimensions = dimensions; }
+        { this.dimensions = CorrectDimensions(dimensions); }
+
+        private Rectangle CorrectDimensions(Rectangle dimensions)
+        {
+            Vector2 mapDimensions = mc.GetDimensions();
+
+            if (dimensions.Width < 1)
+                dimensions.Width = 1;
+            if (dimensions.Height < 1)
+                dimensions.Height = 1;
+            if (dimensions.X < 0)
+                dimensions.X = 0;
+            if (dimensions.Y < 0)
+                dimensions.Y = 0;
+            if ((dimensions.X + dimensions.Width) > mapDimensions.X)
+                dimensions.X = (int)mapDimensions.X - dimensions.Width;
+            if ((dimensions.Y + dimensions.Height) > mapDimensions.Y)
+                dimensions.Y = (int)mapDimensions.Y - dimensions.Height;
+
+            return new Rectangle(dimensions.X, dimensions.Y, dimensions.Width, dimensions.Height);
+        }
 
         // Draws the map part that is currently in the frame.
 
@@ -61,7 +87,6 @@ namespace Survivatron.ViewFrames
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            MapController mc = MapController.GetInstance();
             TileHandler[] ths = TileHandler.Instances;
             curMap = (Map)mc.GetZone(dimensions);
 
