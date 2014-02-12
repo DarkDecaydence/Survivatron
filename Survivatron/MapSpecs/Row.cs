@@ -47,5 +47,14 @@ namespace Survivatron.MapSpecs
             Objects = newRow.Objects;
             return this;
         }
+
+        public void ToggleObject(GameObject target)
+        {
+            GameObject listTarget = Objects.Find(gObj => { return gObj.Equals(target); });
+            if (listTarget == null)
+            { Objects.Add(target); }
+            else
+            { Objects.Remove(listTarget); }
+        }
     }
 }

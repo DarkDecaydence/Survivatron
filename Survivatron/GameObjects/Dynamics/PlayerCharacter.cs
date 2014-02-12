@@ -16,7 +16,6 @@ namespace Survivatron.GameObjects.Dynamics
 
         public PlayerCharacter(int owner)
         {
-            MapController.CallOut += base.OnCall;
             base.Representation = (char)16;
             base.ID = new GOID(1, owner);
             base.FType = GameObjectType.PLAYER;

@@ -47,7 +47,7 @@ namespace SurvivatronUnitTests
             mc.AddDynamic(new Vector2(2, 2), ref dynaSheep);
             testSheep = (Sheep)dynaSheep;
 
-            Sheep testSheep2 = (Sheep)mc.GetObject(testSheep.ID);
+            Sheep testSheep2 = (Sheep)mc.GetGameObject(testSheep.ID);
 
             Assert.IsTrue(testSheep.ID.Equals(testSheep2.ID));
         }
@@ -64,7 +64,7 @@ namespace SurvivatronUnitTests
             bool status = false;
             status = mc.SetGameObject(newSheep);
 
-            Sheep sheepCopy = (Sheep)mc.GetObject(newSheep.ID);
+            Sheep sheepCopy = (Sheep)mc.GetGameObject(newSheep.ID);
 
             Assert.IsTrue(sheepCopy.Equals(newSheep) && status);
         }

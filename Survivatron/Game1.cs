@@ -65,7 +65,7 @@ namespace Survivatron
 
             // Adding dynamics:
             Dynamic dynamic = (Dynamic)players[0].Character;
-            mc.AddDynamic(new Vector2(5, 5), ref dynamic);
+            mc.AddDynamic(new Vector2(5, 4), ref dynamic);
             players[0].Character = (PlayerCharacter)dynamic;
             /* End of map creation and initialization. */
 

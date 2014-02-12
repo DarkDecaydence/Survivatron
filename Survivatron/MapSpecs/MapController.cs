@@ -36,6 +36,8 @@ namespace Survivatron.MapSpecs
         {
             Current = map;
             MapObjects = FindObjects(Current.columns);
+            foreach (GameObject gObj in MapObjects)
+                SetGameObject(gObj);
         }
 
         /* Interface Methods */
@@ -55,21 +57,21 @@ namespace Survivatron.MapSpecs
             if (target != null)
             {
                 MapObjects.Remove(target);
-                Map gObjZone = (Map)Current.GetZone(new Rectangle((int)target.Position.X, (int)target.Position.Y, 1, 1));
-                gObjZone.columns[0].rows[0].Objects.Remove(target);
-                Current.SetZone(new Vector2(target.Position.X, target.Position.Y), gObjZone);
+                Current.SetZone(target.Position, ToggleObject(target));
             }
 
             MapObjects.Add(newObject);
-            Map newGObjZone = (Map)Current.GetZone(new Rectangle((int)newObject.Position.X, (int)newObject.Position.Y, 1, 1));
-            newGObjZone.columns[0].rows[0].Objects.Add(newObject);
-            Current.SetZone(new Vector2(newObject.Position.X, newObject.Position.Y), newGObjZone);
+            Current.SetZone(newObject.Position, ToggleObject(newObject));
 
             return true;
         }
 
-        /* Static class. */
-        public static event CallEventHandler CallOut;
+        private IMap ToggleObject(GameObject gameObject)
+        {
+            Map gObjZone = (Map)Current.GetZone(new Rectangle((int)gameObject.Position.X, (int)gameObject.Position.Y, 1, 1));
+            gObjZone.columns[0].rows[0].ToggleObject(gameObject);
+            return (IMap)gObjZone;
+        }
 
         public static bool HasSolid(Row row)
         {
@@ -99,36 +101,24 @@ namespace Survivatron.MapSpecs
             Random rand = new Random();
 
             int width = map.columns.Length;
-            int height = map.columns[width - 1].rows.Length;
+            int height = map.columns[0].rows.Length;
 
             int fields = width * height;
 
             for (int treecount = fields / frequency; treecount != 0; treecount--)
             {
-                var x = rand.Next(width); var y = rand.Next(height);
-                while (!map.GetRow(x, y).isFree())
-                { x = rand.Next(width); y = rand.Next(height); }
-                AddObject(new Vector2(x, y), new Tree());
+                var nextTree = new Tree();
+                nextTree.Position = new Vector2(rand.Next(width), rand.Next(height));
+                while (!map.GetRow((int)nextTree.Position.X, (int)nextTree.Position.Y).isFree())
+                { nextTree.Position = new Vector2(rand.Next(width), rand.Next(height)); }
+                ToggleObject(nextTree);
             }
         }
 
         public void AddDynamic(Vector2 position, ref Dynamic dynamic)
         {
-            AddObject(position, dynamic);
-            MapObjects.Add(dynamic);
-            dynamic.Position = new Vector2(position.X, position.Y);
-            position = Vector2.Add(position, new Vector2(3,3));
-        }
-
-        private void AddObject(Vector2 position, GameObject gameObject)
-        { Current.columns[(int)position.X].rows[(int)position.Y].Objects.Add(gameObject); }
-
-        public GameObject GetObject(GOID ID)
-        {
-            foreach (GameObject o in MapObjects)
-                if (ID.Equals(o.ID)) { return o; }
-
-            return null;
+            dynamic.Position = position;
+            SetGameObject(dynamic);
         }
 
         public void MoveObject(GOID ID, Vector2 moveVector)

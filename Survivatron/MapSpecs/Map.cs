@@ -69,8 +69,6 @@ namespace Survivatron.MapSpecs
         public Map(int dimX, int dimY)
         {
             columns = new Column[dimX];
-            //this.tileHandlers = tileHandlers;
-            //mapObjects = new List<GameObject>();
 
             for (int i = 0; i < dimX; i++)
             { columns[i] = new Column(dimY); }
@@ -81,7 +79,6 @@ namespace Survivatron.MapSpecs
         {
             Map cropped = new Map(0, 0);
             cropped.columns = Crop(rect);
-            //cropped.mapObjects = MapController.FindObjects(cropped.columns);
             return cropped;
         }
 
