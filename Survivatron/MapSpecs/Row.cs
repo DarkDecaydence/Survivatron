@@ -10,17 +10,17 @@ namespace Survivatron.MapSpecs
 {
     public class Row
     {
-        public List<GameObject> objects;
+        public List<GameObject> Objects { get; set; }
 
         public Row()
         {
-            objects = new List<GameObject>();
-            objects.Add(new Floor());
+            Objects = new List<GameObject>();
+            Objects.Add(new Floor());
         }
 
         public bool isFree()
         {
-            foreach (GameObject g in objects)
+            foreach (GameObject g in Objects)
                 if (g.Solid) return false;
             return true;
         }
@@ -34,9 +34,9 @@ namespace Survivatron.MapSpecs
 
             // Checks if objects are equal.
             int i = 0;
-            if (objects.Count != castR.objects.Count) { return false; }
-            for (GameObject gObj = objects[i]; i < objects.Count; i++)
-                if (!gObj.Equals(castR.objects[i]))
+            if (Objects.Count != castR.Objects.Count) { return false; }
+            for (GameObject gObj = Objects[i]; i < Objects.Count; i++)
+                if (!gObj.Equals(castR.Objects[i]))
                     return false;
 
             return true;
@@ -44,7 +44,7 @@ namespace Survivatron.MapSpecs
 
         public Row SetZone(Row newRow)
         {
-            objects = newRow.objects;
+            Objects = newRow.Objects;
             return this;
         }
     }

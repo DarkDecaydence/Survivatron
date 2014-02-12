@@ -12,6 +12,6 @@ namespace Survivatron.Mastermind.Tactics
 
     public interface Tactic
     {
-        GameAction CalculateNextAction();
+        IGameAction CalculateNextAction();
     }
 }

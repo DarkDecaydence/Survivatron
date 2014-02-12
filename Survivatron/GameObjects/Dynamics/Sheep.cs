@@ -12,7 +12,7 @@ namespace Survivatron.GameObjects.Dynamics
 {
     public class Sheep : DynamicAI
     {
-        public override GameAction NextAction { get; set; }
+        public override IGameAction NextAction { get; set; }
         public override int ActionPointMax { get; set; }
         public override Tactic AITactic { get; set; }
         private int actionPoints;

@@ -26,7 +26,6 @@ namespace Survivatron
         SpriteBatch spriteBatch;
         private Texture2D[] tilesets = new Texture2D[3];
         private PlayerController[] players;
-        private MastermindAI mastermind;
 
         public Game1()
             : base()

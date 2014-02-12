@@ -18,7 +18,7 @@ namespace Survivatron.GameObjects.Dynamics
         public override bool Solid { get; set; }
 
         public static event ReadyEventHandler Ready;
-        public abstract GameAction NextAction { get; set; }
+        public abstract IGameAction NextAction { get; set; }
         public abstract int ActionPointMax { get; set; }
         
         public void ReadyUp(int[] args)

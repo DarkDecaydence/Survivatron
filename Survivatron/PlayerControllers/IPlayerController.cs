@@ -10,6 +10,6 @@ namespace Survivatron.PlayerControllers
     interface IPlayerController
     {
         bool UpdateGameObject(GOID goid, GameObject newObject);
-        bool AttachAction(ref GameObject gameObject, GameAction gameAction);
+        bool AttachAction(ref GameObject gameObject, IGameAction gameAction);
     }
 }

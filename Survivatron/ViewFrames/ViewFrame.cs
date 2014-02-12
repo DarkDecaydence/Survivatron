@@ -101,13 +101,13 @@ namespace Survivatron.ViewFrames
                     Vector2 drawPos = new Vector2(i * ths[0].TileEdge, j * ths[0].TileEdge);
 
                     /* Draws green floor. */
-                    GameObject curObject = curField.objects[0];
+                    GameObject curObject = curField.Objects[0];
                     spriteBatch.Draw(ths[0].TileSet, drawPos, ths[0].getChar(curObject.Representation), Color.Green);
 
                     // Draws top object in the current field
-                    if (curField.objects.Count > 1)
+                    if (curField.Objects.Count > 1)
                     {
-                        curObject = curField.objects[curField.objects.Count - 1];
+                        curObject = curField.Objects[curField.Objects.Count - 1];
                         TileHandler curTH;
                         switch (curObject.FType)
                         {

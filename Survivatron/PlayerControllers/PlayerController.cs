@@ -24,7 +24,7 @@ namespace Survivatron.PlayerControllers
         public bool UpdateGameObject(GOID goid, GameObject newObject)
         { return false; }
 
-        public bool AttachAction(ref GameObject gameObject, GameAction gameAction)
+        public bool AttachAction(ref GameObject gameObject, IGameAction gameAction)
         { return false; }
 
         public PlayerController(int player, ViewFrame gameFrame)
@@ -101,21 +101,6 @@ namespace Survivatron.PlayerControllers
             //if (Keyboard.GetState().IsKeyDown(charControls[4]))
             { //Character.Move('x'); 
             }
-        }
-
-        private void Interact(Vector2 direction)
-        {
-            Func<int[], int> command = iArr => {
-                MapController.GetInstance().MoveObject(Character.ID, direction);
-                return 1; };
-            Character.NextAction = new GameAction(command);
-            Character.ReadyUp(new int[] {(int)direction.X, (int)direction.Y});
-        }
-
-        private void Wait()
-        {
-            GameAction action = new GameAction();
-            Character.NextAction = action;
         }
     }
 }

@@ -34,7 +34,6 @@ namespace Survivatron.MapSpecs
 
         private MapController(Map map)
         {
-            Dynamic.Ready += ReadyUp;
             Current = map;
             MapObjects = FindObjects(Current.columns);
         }
@@ -46,15 +45,27 @@ namespace Survivatron.MapSpecs
         public virtual Vector2 GetDimensions()
         { return Current.GetDimensions(); }
 
-        // Onlt gets and sets to the gameobject list, not to the map itself.
+        // Only gets and sets to the gameobject list, not to the map itself.
         public virtual GameObject GetGameObject(GOID goid)
         { return MapObjects.Find(new Predicate<GameObject>(gObj => gObj.ID.Equals(goid))); }
 
-        public virtual bool SetGameObject(GameObject gameObject)
+        public virtual bool SetGameObject(GameObject newObject)
         {
-            GameObject target = MapObjects.Find(new Predicate<GameObject>(gObj => gObj.ID.Equals(gameObject.ID)));
-            if (target != null) { MapObjects.Remove(target); MapObjects.Add(gameObject); return true; }
-            else { MapObjects.Add(gameObject); return true; }
+            GameObject target = GetGameObject(newObject.ID);
+            if (target != null)
+            {
+                MapObjects.Remove(target);
+                Map gObjZone = (Map)Current.GetZone(new Rectangle((int)target.Position.X, (int)target.Position.Y, 1, 1));
+                gObjZone.columns[0].rows[0].Objects.Remove(target);
+                Current.SetZone(new Vector2(target.Position.X, target.Position.Y), gObjZone);
+            }
+
+            MapObjects.Add(newObject);
+            Map newGObjZone = (Map)Current.GetZone(new Rectangle((int)newObject.Position.X, (int)newObject.Position.Y, 1, 1));
+            newGObjZone.columns[0].rows[0].Objects.Add(newObject);
+            Current.SetZone(new Vector2(newObject.Position.X, newObject.Position.Y), newGObjZone);
+
+            return true;
         }
 
         /* Static class. */
@@ -62,7 +73,7 @@ namespace Survivatron.MapSpecs
 
         public static bool HasSolid(Row row)
         {
-            foreach (GameObject g in row.objects)
+            foreach (GameObject g in row.Objects)
               if (g.Solid) { return true; }
 
             return false;
@@ -74,8 +85,8 @@ namespace Survivatron.MapSpecs
 
             foreach (Column c in columns)
                 foreach (Row r in c.rows)
-                    if (r.objects.Count > 1)
-                        found.AddRange(r.objects.GetRange(1, r.objects.Count - 1));
+                    if (r.Objects.Count > 1)
+                        found.AddRange(r.Objects.GetRange(1, r.Objects.Count - 1));
 
             return found;
         }
@@ -110,7 +121,7 @@ namespace Survivatron.MapSpecs
         }
 
         private void AddObject(Vector2 position, GameObject gameObject)
-        { Current.columns[(int)position.X].rows[(int)position.Y].objects.Add(gameObject); }
+        { Current.columns[(int)position.X].rows[(int)position.Y].Objects.Add(gameObject); }
 
         public GameObject GetObject(GOID ID)
         {
@@ -140,42 +151,13 @@ namespace Survivatron.MapSpecs
                     if (withinBounds) { free = !MapController.HasSolid(Current.columns[newX].rows[newY]); }
                     if (free)
                     {
-                        Current.columns[newX].rows[newY].objects.Add(f);
-                        Current.columns[x].rows[y].objects.Remove(f);
+                        Current.columns[newX].rows[newY].Objects.Add(f);
+                        Current.columns[x].rows[y].Objects.Remove(f);
                         f.Position = new Vector2(newX, newY);
                     }
                     return;
                 }
             }
         }
-
-        private void ReadyUp(Dynamic sender, ActionEventArgs e)
-        {
-            if (actionQueue.ContainsKey(sender.ID))
-            {
-                actionQueue.Remove(sender.ID);
-                actionQueue.Add(sender.ID, e.args);
-            }
-            else
-            { actionQueue.Add(sender.ID, e.args); }
-
-            int objectCount = MapObjects.Count;
-            if (actionQueue.Count > objectCount) { throw new Exception("ReadyCounter out of range\n"); }
-            if (actionQueue.Count == objectCount) { ExecuteActions(); }
-        }
-
-        private void ExecuteActions()
-        {
-            foreach (KeyValuePair<GOID, int[]> action in actionQueue)
-                CallOut(new CallEventArgs(action.Key));
-        }
-
-        public void CallReturn(Dynamic dynam)
-        {
-            int[] args;
-            if (actionQueue.TryGetValue(dynam.ID, out args))
-            { dynam.NextAction.Execute(args); dynam.NextAction = null; }
-        }
-
     }
 }

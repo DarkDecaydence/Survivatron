@@ -10,7 +10,7 @@ namespace Survivatron.GameObjects.Dynamics
 {
     public class PlayerCharacter : Dynamic
     {
-        public override GameAction NextAction { get; set; }
+        public override IGameAction NextAction { get; set; }
         public override int ActionPointMax { get; set; }
         private int actionPoints;
 
