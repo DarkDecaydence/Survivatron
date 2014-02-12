@@ -13,5 +13,11 @@ namespace Survivatron.GameObjects
         public abstract GameObjectType FType { get; set; }
         public abstract Vector2 Position { get; set; }
         public abstract bool Solid { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if ((GameObject)obj == null) return false;
+            return ID.Equals(((GameObject)obj).ID);
+        }
     }
 }

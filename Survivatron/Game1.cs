@@ -49,30 +49,35 @@ namespace Survivatron
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            /* Map creation and initialization: */
             Map gameMap = new Map((int)(14400 / 18), (int)(10800 / 18));
             MapController mc = MapController.Construct(gameMap);
-            mastermind = MastermindAI.Instance;
 
-            ViewFrame gameFrame = new ViewFrame(0, 0,
-                (int)Math.Round((double)(graphics.PreferredBackBufferWidth - 128) / 18.0),
-                (int)Math.Round((double)(graphics.PreferredBackBufferHeight - 96) / 18.0));
-            players = new PlayerController[] {new PlayerController(1, gameFrame)};
-            Dynamic[] dynams = { players[0].Character/*, mastermind.AddSheep(), mastermind.AddSheep()*/ };
+            ViewFrame player1ViewFrame = new ViewFrame();
+            PlayerController player1 = new PlayerController(1, player1ViewFrame);
+            players = new PlayerController[] { player1 };
 
+            // Creating dynamics:
+            PlayerCharacter pc = new PlayerCharacter(1);
+            players[0].Character = pc;
 
-            mc.AddDynamics(new Vector2(5, 5), ref dynams);
+            // Adding statics:
             mc.AddTrees(gameMap, 70);
 
+            // Adding dynamics:
+            Dynamic dynamic = (Dynamic)players[0].Character;
+            mc.AddDynamic(new Vector2(5, 5), ref dynamic);
+            players[0].Character = (PlayerCharacter)dynamic;
+            /* End of map creation and initialization. */
+
             /* GameFrame calculations: */
-            /*
             int frameX, frameY;
             double frameW, frameH;
             frameW = Math.Round((double)(graphics.PreferredBackBufferWidth - 128) / 18.0);
             frameH = Math.Round((double)(graphics.PreferredBackBufferHeight - 96) / 18.0);
             frameX = (int)players[0].Character.Position.X - (int)Math.Round(frameW / 2);
             frameY = (int)players[0].Character.Position.Y - (int)Math.Round(frameH / 2);
-            gameFrame.ChangeFrame(new Rectangle(frameX, frameY, (int)frameW, (int)frameH));
-            */
+            player1ViewFrame.ChangeFrame(new Rectangle(frameX, frameY, (int)frameW, (int)frameH));
             /* End of calculations. */
 
             base.Initialize();
@@ -115,8 +120,6 @@ namespace Survivatron
 
             // TODO: Add your update logic here
             players[0].Update();
-
-            mastermind.Update();
 
             base.Update(gameTime);
         }

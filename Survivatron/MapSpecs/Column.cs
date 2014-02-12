@@ -30,8 +30,9 @@ namespace Survivatron.MapSpecs
 
         public Column SetZone(int start, Column newColumn)
         {
+            int j = 0;
             for (int i = start; i < (start + newColumn.rows.Length); i++)
-                rows[i] = newColumn.rows[i];
+                rows[i] = newColumn.rows[j++];
 
             return this;
         }
