@@ -51,8 +51,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GameActions\ActionEnum.cs" />
-    <Compile Include="GameActions\GameAction.cs" />
     <Compile Include="GameActions\ActionHandler.cs" />
+    <Compile Include="GameActions\ActionSelf.cs" />
+    <Compile Include="GameActions\ActionTarget.cs" />
+    <Compile Include="GameActions\IGameAction.cs" />
     <Compile Include="GameEvents\ActionEventArgs.cs" />
     <Compile Include="GameEvents\CallEventArgs.cs" />
     <Compile Include="GameObjects\Dynamics\DynamicAI.cs" />

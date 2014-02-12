@@ -8,31 +8,18 @@ namespace Survivatron.GameActions
 {
     public class ActionHandler
     {
-        public static GameAction Interact()
+        public IGameAction CreateWait()
         {
-            /*
-            return new GameAction
-            {
-                Execute = new Func<string[],int>()
-            };
-             * 
-             */
-            return null;
+            Func<int> waitCommand = new Func<int>(() => { return 1; });
+            ActionSelf waitAction = new ActionSelf(waitCommand);
+            return (IGameAction)waitAction;
         }
 
-        public static int InteractAction(String[] args)
+        public IGameAction CreateMove(Vector2 direction)
         {
-            /*int id, tx, ty;
-            bool validID = Int32.TryParse(args[0], out id);
-            bool validTVector = Int32.TryParse(args[1], out ty) && Int32.TryParse(args[2], out tx);
-            
-            if( && ) {
-                Vector2 vT = new Vector2(tx,ty);
-                if (MapSpecs.MapController.Current.GetRow(
-                MapSpecs.MapController.Current.MoveObject(id, vT);
-                return 1;
-            }*/
-            return -1;
+            Func<int[], int> moveCommand = new Func<int[], int>(args => { return 1; });
+            ActionTarget moveAction = new ActionTarget(moveCommand, new int[] { (int)direction.X, (int)direction.Y });
+            return (IGameAction)moveAction;
         }
     }
 }
