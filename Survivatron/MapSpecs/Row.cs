@@ -15,7 +15,7 @@ namespace Survivatron.MapSpecs
         public Row()
         {
             Objects = new List<GameObject>();
-            Objects.Add(new Floor());
+            //Objects.Add(new Floor());
         }
 
         public bool isFree()

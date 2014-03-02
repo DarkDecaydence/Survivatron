@@ -88,19 +88,46 @@ namespace Survivatron.ViewFrames
         public void Draw(SpriteBatch spriteBatch)
         {
             TileHandler[] ths = TileHandler.Instances;
-            curMap = (Map)mc.GetZone(dimensions);
+            curMap = (Map)mc.NewCrop(dimensions);
+            Random ranGen = new Random();
+            Vector2 drawPos = new Vector2(0,0);
 
             spriteBatch.Begin();
 
-            for (int i = 0; i < dimensions.Width; i++)
+            int minX = curMap.MapObjects.Min<GameObject>(new Func<GameObject, int>(gObj => (int)gObj.Position.X));
+            int minY = curMap.MapObjects.Min<GameObject>(new Func<GameObject, int>(gObj => (int)gObj.Position.Y));
+
+            for (int i = 0; i < dimensions.Width; i++) {
+                for (int j = 0; j < dimensions.Height; j++) {
+                    drawPos = new Vector2(i*18, j*18);
+                    spriteBatch.Draw(ths[0].TileSet, drawPos, ths[0].getChar((char)(ranGen.Next(4)+151)), Color.Green);
+                }
+            }
+
+            foreach (GameObject gObj in curMap.MapObjects)
+            {
+                /* Current Position */
+                drawPos = new Vector2((gObj.Position.X - minX) * ths[0].TileEdge, (gObj.Position.Y - minY) * ths[0].TileEdge);
+
+                TileHandler curTH;
+                switch (gObj.FType)
+                {
+                    case GameObjectType.BASIC: curTH = ths[0]; break;
+                    case GameObjectType.PLAYER: curTH = ths[1]; break;
+                    case GameObjectType.CRITTER: curTH = ths[2]; break;
+                    default: curTH = ths[0]; break;
+                }
+
+                spriteBatch.Draw(curTH.TileSet, drawPos, curTH.getChar(gObj.Representation), Color.White);
+            }
+
+            /*for (int i = 0; i < dimensions.Width; i++)
             {
                 for (int j = 0; j < dimensions.Height; j++)
                 {
-                    /* Current position. */
                     Row curField = curMap.columns[i].rows[j];
                     Vector2 drawPos = new Vector2(i * ths[0].TileEdge, j * ths[0].TileEdge);
 
-                    /* Draws green floor. */
                     GameObject curObject = curField.Objects[0];
                     spriteBatch.Draw(ths[0].TileSet, drawPos, ths[0].getChar(curObject.Representation), Color.Green);
 
@@ -121,6 +148,7 @@ namespace Survivatron.ViewFrames
                     }
                 }
             }
+            */
 
             spriteBatch.End();
 

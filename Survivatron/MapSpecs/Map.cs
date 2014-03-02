@@ -18,6 +18,10 @@ namespace Survivatron.MapSpecs
      */
     public class Map : IMap
     {
+        /* Object List */
+        public List<GameObject> MapObjects { get; private set; }
+        public List<GameObject> FloorObjects { get; private set; }
+
         /* Concrete board */
         public Column[] columns { get; set; }
 
@@ -40,6 +44,12 @@ namespace Survivatron.MapSpecs
         {
             return null;
         }
+
+        public void GetObject(GameObject target)
+        { MapObjects.Find(new Predicate<GameObject>(gObj => gObj.Equals(target))); }
+
+        public void SetObject(GameObject target)
+        { MapObjects.Add(target); }
 
         public Vector2 GetDimensions()
         { return new Vector2(columns.Length, columns[0].rows.Length); }
@@ -68,6 +78,15 @@ namespace Survivatron.MapSpecs
 
         public Map(int dimX, int dimY)
         {
+            MapObjects = new List<GameObject>();
+            FloorObjects = new List<GameObject>();
+            for (int i = 0; i < dimX; i++)
+            {
+                for (int j = 0; j < dimY; j++)
+                {
+                    FloorObjects.Add((GameObject)new GameObjects.Statics.Floor(i, j));
+                }
+            }
             columns = new Column[dimX];
 
             for (int i = 0; i < dimX; i++)
@@ -98,10 +117,17 @@ namespace Survivatron.MapSpecs
             return cropped;
         }
 
+        public IMap NewCrop(int x, int y, int width, int height)
+        {
+            Map croppedMap = new Map(width, height);
+            croppedMap.MapObjects = this.MapObjects.FindAll(new Predicate<GameObject>(gObj => 
+                gObj.Position.X > x && gObj.Position.X < x + width &&
+                gObj.Position.Y > y && gObj.Position.Y < y + height)
+                );
+            return (IMap)croppedMap;
+        }
+
         public Column[] Crop(Rectangle rect)
         { return Crop(rect.X, rect.Y, rect.Width, rect.Height); }
-
-        public Row GetRow(int x, int y)
-        { return columns[x].rows[y]; }
     }
 }

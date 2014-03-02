@@ -16,13 +16,14 @@ namespace Survivatron.GameObjects.Statics
         public override Vector2 Position { get; set; }
         public override bool Solid { get; set; }
 
-        public Floor()
+        public Floor(int x, int y)
         {
             int i = Floor.ranGen.Next(4);
             Representation = Floor.repCatalogue[i];
             ID = new GOID(-1,-1);
             FType = GameObjectType.BASIC;
             Solid = false;
+            Position = new Vector2(x, y);
         }
     }
 }

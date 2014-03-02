@@ -44,6 +44,11 @@ namespace Survivatron.MapSpecs
         public virtual IMap GetZone(Rectangle rect)
         { return Current.GetZone(rect); }
 
+        public IMap NewCrop(Rectangle rect)
+        {
+            return (Map)Current.NewCrop(rect.X, rect.Y, rect.Width, rect.Height);
+        }
+
         public virtual Vector2 GetDimensions()
         { return Current.GetDimensions(); }
 
@@ -62,6 +67,7 @@ namespace Survivatron.MapSpecs
 
             MapObjects.Add(newObject);
             Current.SetZone(newObject.Position, ToggleObject(newObject));
+            Current.SetObject(newObject);
 
             return true;
         }
@@ -95,7 +101,7 @@ namespace Survivatron.MapSpecs
 
         // Frequency is measured in the chance that a tree will appear.
         // A tree cannot appear on a row that already contains a solid.
-        public void AddTrees(Map map, int frequency)
+        /*public void AddTrees(Map map, int frequency)
         {
             if (frequency < 1) { return; }
             Random rand = new Random();
@@ -113,7 +119,7 @@ namespace Survivatron.MapSpecs
                 { nextTree.Position = new Vector2(rand.Next(width), rand.Next(height)); }
                 ToggleObject(nextTree);
             }
-        }
+        }*/
 
         public void AddDynamic(Vector2 position, ref Dynamic dynamic)
         {

@@ -61,7 +61,7 @@ namespace Survivatron
             players[0].Character = pc;
 
             // Adding statics:
-            mc.AddTrees(gameMap, 70);
+            //mc.AddTrees(gameMap, 70);
 
             // Adding dynamics:
             Dynamic dynamic = (Dynamic)players[0].Character;
