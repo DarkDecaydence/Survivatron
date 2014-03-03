@@ -132,7 +132,7 @@ namespace Survivatron
             GraphicsDevice.Clear(Color.Black);
 
             players[0].GameFrame.Draw(spriteBatch);
-
+            
             base.Draw(gameTime);
         }
     }

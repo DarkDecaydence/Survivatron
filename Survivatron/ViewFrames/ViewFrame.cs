@@ -12,6 +12,8 @@ namespace Survivatron.ViewFrames
 {
     public class ViewFrame : IViewFrame
     {
+        private static Random rand = new Random();
+        private int frameSeed = rand.Next();
         public Map curMap { get; set; }
         public Rectangle dimensions { get; set; } // This is the dimensions in rows, not pixels.
         private MapController mc;
@@ -46,13 +48,14 @@ namespace Survivatron.ViewFrames
 
             Vector2 worldMapDims = mc.GetDimensions();
 
+            /*
             if (tempDim.X < 0 || (tempDim.X + tempDim.Width) >= worldMapDims.X)
                 return;
             if (tempDim.Y < 0 || (tempDim.Y + tempDim.Height) >= worldMapDims.Y)
                 return;
+            */
 
             dimensions = tempDim;
-            curMap = (Map)mc.GetZone(dimensions);
         }
 
         public void MoveFrame(Vector2 moveVector)
@@ -69,6 +72,7 @@ namespace Survivatron.ViewFrames
                 dimensions.Width = 1;
             if (dimensions.Height < 1)
                 dimensions.Height = 1;
+            /*
             if (dimensions.X < 0)
                 dimensions.X = 0;
             if (dimensions.Y < 0)
@@ -77,6 +81,7 @@ namespace Survivatron.ViewFrames
                 dimensions.X = (int)mapDimensions.X - dimensions.Width;
             if ((dimensions.Y + dimensions.Height) > mapDimensions.Y)
                 dimensions.Y = (int)mapDimensions.Y - dimensions.Height;
+             */
 
             return new Rectangle(dimensions.X, dimensions.Y, dimensions.Width, dimensions.Height);
         }
@@ -89,25 +94,23 @@ namespace Survivatron.ViewFrames
         {
             TileHandler[] ths = TileHandler.Instances;
             curMap = (Map)mc.NewCrop(dimensions);
-            Random ranGen = new Random();
             Vector2 drawPos = new Vector2(0,0);
 
             spriteBatch.Begin();
 
-            int minX = curMap.MapObjects.Min<GameObject>(new Func<GameObject, int>(gObj => (int)gObj.Position.X));
-            int minY = curMap.MapObjects.Min<GameObject>(new Func<GameObject, int>(gObj => (int)gObj.Position.Y));
-
+            // Math commencing
             for (int i = 0; i < dimensions.Width; i++) {
                 for (int j = 0; j < dimensions.Height; j++) {
                     drawPos = new Vector2(i*18, j*18);
-                    spriteBatch.Draw(ths[0].TileSet, drawPos, ths[0].getChar((char)(ranGen.Next(4)+151)), Color.Green);
+                    Random ranGen = new Random(frameSeed-(dimensions.X + i) * (dimensions.Y + j));
+                    spriteBatch.Draw(ths[0].TileSet, drawPos, ths[0].getChar((char)(ranGen.Next(ranGen.Next(255 + dimensions.X + i) * ranGen.Next(255 + dimensions.Y + j)) % 4 + 151)), Color.Green);
                 }
             }
 
             foreach (GameObject gObj in curMap.MapObjects)
             {
                 /* Current Position */
-                drawPos = new Vector2((gObj.Position.X - minX) * ths[0].TileEdge, (gObj.Position.Y - minY) * ths[0].TileEdge);
+                drawPos = new Vector2((gObj.Position.X - dimensions.X) * ths[0].TileEdge, (gObj.Position.Y - dimensions.Y) * ths[0].TileEdge);
 
                 TileHandler curTH;
                 switch (gObj.FType)
@@ -120,35 +123,6 @@ namespace Survivatron.ViewFrames
 
                 spriteBatch.Draw(curTH.TileSet, drawPos, curTH.getChar(gObj.Representation), Color.White);
             }
-
-            /*for (int i = 0; i < dimensions.Width; i++)
-            {
-                for (int j = 0; j < dimensions.Height; j++)
-                {
-                    Row curField = curMap.columns[i].rows[j];
-                    Vector2 drawPos = new Vector2(i * ths[0].TileEdge, j * ths[0].TileEdge);
-
-                    GameObject curObject = curField.Objects[0];
-                    spriteBatch.Draw(ths[0].TileSet, drawPos, ths[0].getChar(curObject.Representation), Color.Green);
-
-                    // Draws top object in the current field
-                    if (curField.Objects.Count > 1)
-                    {
-                        curObject = curField.Objects[curField.Objects.Count - 1];
-                        TileHandler curTH;
-                        switch (curObject.FType)
-                        {
-                            case GameObjectType.BASIC:      curTH = ths[0]; break;
-                            case GameObjectType.PLAYER:     curTH = ths[1]; break;
-                            case GameObjectType.CRITTER:    curTH = ths[2]; break;
-                            default:                        curTH = ths[0]; break;
-                        }
-
-                        spriteBatch.Draw(curTH.TileSet, drawPos, curTH.getChar(curObject.Representation), Color.White);
-                    }
-                }
-            }
-            */
 
             spriteBatch.End();
 

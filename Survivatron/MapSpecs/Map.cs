@@ -20,7 +20,6 @@ namespace Survivatron.MapSpecs
     {
         /* Object List */
         public List<GameObject> MapObjects { get; private set; }
-        public List<GameObject> FloorObjects { get; private set; }
 
         /* Concrete board */
         public Column[] columns { get; set; }
@@ -79,14 +78,6 @@ namespace Survivatron.MapSpecs
         public Map(int dimX, int dimY)
         {
             MapObjects = new List<GameObject>();
-            FloorObjects = new List<GameObject>();
-            for (int i = 0; i < dimX; i++)
-            {
-                for (int j = 0; j < dimY; j++)
-                {
-                    FloorObjects.Add((GameObject)new GameObjects.Statics.Floor(i, j));
-                }
-            }
             columns = new Column[dimX];
 
             for (int i = 0; i < dimX; i++)

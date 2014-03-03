@@ -51,6 +51,26 @@ namespace Survivatron.PlayerControllers
 
         public void Update()
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.C))
+            {
+                GameFrame.ChangeFrame(new Rectangle((int)Character.Position.X - GameFrame.dimensions.Width/2,(int)Character.Position.Y - GameFrame.dimensions.Height/2, GameFrame.dimensions.Width, GameFrame.dimensions.Height));
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                GameFrame.MoveFrame(0, -1);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            {
+                GameFrame.MoveFrame(-1, 0);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            {
+                GameFrame.MoveFrame(1, 0);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                GameFrame.MoveFrame(0, 1);
+            }
             /*
              * The width and height of the gameframe is defined in tiles, not pixels, hench map.columns.length is used to determain deadzones.
              */

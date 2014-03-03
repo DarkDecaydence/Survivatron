@@ -101,7 +101,8 @@ namespace Survivatron.MapSpecs
 
         // Frequency is measured in the chance that a tree will appear.
         // A tree cannot appear on a row that already contains a solid.
-        /*public void AddTrees(Map map, int frequency)
+        /*
+         * public void AddTrees(Map map, int frequency)
         {
             if (frequency < 1) { return; }
             Random rand = new Random();
