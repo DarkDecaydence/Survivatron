@@ -20,38 +20,26 @@ namespace Survivatron.MapSpecs
     {
         /* Object List */
         public List<GameObject> MapObjects { get; private set; }
-
-        /* Concrete board */
-        public Column[] columns { get; set; }
+        public Vector2 Dimensions { get; private set; }
 
         /* Interface methods */
-        public virtual IMap GetZone(Rectangle rect)
-        { return (IMap)CroppedMap(rect); }
-
-        public virtual IMap SetZone(Vector2 origin, IMap newMap)
+        public virtual void ProcessTurn()
         {
-            int j = 0;
-            for (int i = ((int)origin.X);
-                i < (((Map)newMap).columns.Length + ((int)origin.X));
-                i++)
-            { columns[i].SetZone((int)origin.Y, ((Map)newMap).columns[j++]); }
+            foreach (GameObject gObj in MapObjects)
+            {
+                if ((Dynamic)gObj == null)
+                { continue; }
 
-            return this;
+                ((Dynamic)gObj).NextAction.Execute();
+                ((Dynamic)gObj).NextAction = ActionHandler.CreateWait();
+            }
         }
 
-        public virtual IMap ProcessTurn()
-        {
-            return null;
-        }
-
-        public void GetObject(GameObject target)
-        { MapObjects.Find(new Predicate<GameObject>(gObj => gObj.Equals(target))); }
+        public GameObject GetObject(GameObject target)
+        { return MapObjects.Find(new Predicate<GameObject>(gObj => gObj.Equals(target))); }
 
         public void SetObject(GameObject target)
         { MapObjects.Add(target); }
-
-        public Vector2 GetDimensions()
-        { return new Vector2(columns.Length, columns[0].rows.Length); }
 
         public override bool Equals(object obj)
         {
@@ -60,57 +48,24 @@ namespace Survivatron.MapSpecs
             if (mapCast == null)
                 return false;
 
-            //Checks if the length is equal.
-            if (columns.Length != mapCast.columns.Length)
-            { return false; }
-            else // Checks recursively if the columns are equal
-            {
-                int i = 0;
-                for (Column c = columns[i]; i < columns.Length; i++)
-                    if (!c.Equals(mapCast.columns[i]))
-                        return false;
-            }
-            return true;
+            return Dimensions.Equals(mapCast.Dimensions) && mapCast.MapObjects.Equals(this.MapObjects);
         }
 
         /* Constructor and help methods */
 
-        public Map(int dimX, int dimY)
+        public Map() : this(0,0)
+        { }
+
+        public Map(int width, int height)
         {
             MapObjects = new List<GameObject>();
-            columns = new Column[dimX];
-
-            for (int i = 0; i < dimX; i++)
-            { columns[i] = new Column(dimY); }
+            Dimensions = new Vector2(width, height);
         }
 
         // Returns a cropped part of the current map, with the objects related to the cropped map.
-        public Map CroppedMap(Rectangle rect)
+        public IMap Crop(int x, int y, int width, int height)
         {
-            Map cropped = new Map(0, 0);
-            cropped.columns = Crop(rect);
-            return cropped;
-        }
-
-        public Column[] Crop(int x, int y, int width, int height)
-        {
-            if (width < 1 || height < 1)
-                return null;
-            if (x < 0) return Crop(0, y, width, height);
-            if ((x + width) > columns.Length) return Crop((columns.Length - (x + width)), y, width, height);
-            if (y < 0) return Crop(x, 0, width, height);
-            if ((y + height) > columns[0].rows.Length) return Crop(x, (columns[0].rows.Length - (y + height)), width, height);
-
-            Column[] cropped = new Column[width];
-            int j = 0;
-            for (int i = x; i < (x + width); i++)
-            { cropped[j++] = columns[i].Crop(y, y+height); }
-            return cropped;
-        }
-
-        public IMap NewCrop(int x, int y, int width, int height)
-        {
-            Map croppedMap = new Map(width, height);
+            Map croppedMap = new Map();
             croppedMap.MapObjects = this.MapObjects.FindAll(new Predicate<GameObject>(gObj => 
                 gObj.Position.X > x && gObj.Position.X < x + width &&
                 gObj.Position.Y > y && gObj.Position.Y < y + height)
@@ -118,7 +73,5 @@ namespace Survivatron.MapSpecs
             return (IMap)croppedMap;
         }
 
-        public Column[] Crop(Rectangle rect)
-        { return Crop(rect.X, rect.Y, rect.Width, rect.Height); }
     }
 }

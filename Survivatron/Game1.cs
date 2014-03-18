@@ -26,6 +26,7 @@ namespace Survivatron
         SpriteBatch spriteBatch;
         private Texture2D[] tilesets = new Texture2D[3];
         private PlayerController[] players;
+        private double prevDifference;
 
         public Game1()
             : base()
@@ -49,7 +50,7 @@ namespace Survivatron
         {
             // TODO: Add your initialization logic here
             /* Map creation and initialization: */
-            Map gameMap = new Map((int)(14400 / 18), (int)(10800 / 18));
+            Map gameMap = new Map();
             MapController mc = MapController.Construct(gameMap);
 
             ViewFrame player1ViewFrame = new ViewFrame();
@@ -119,6 +120,15 @@ namespace Survivatron
 
             // TODO: Add your update logic here
             players[0].Update();
+
+            prevDifference += gameTime.ElapsedGameTime.TotalMilliseconds;
+            double TPS = 1000 / 20;
+            if (prevDifference > TPS)
+            {
+                MapController.MCInstance.ProcessTurn();
+                prevDifference = prevDifference % TPS;
+            }
+
 
             base.Update(gameTime);
         }

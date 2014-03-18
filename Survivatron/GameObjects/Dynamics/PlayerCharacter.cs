@@ -22,6 +22,7 @@ namespace Survivatron.GameObjects.Dynamics
             base.Solid = true;
             ActionPointMax = 100;
             actionPoints = ActionPointMax;
+            NextAction = ActionHandler.CreateWait();
         }
     }
 }

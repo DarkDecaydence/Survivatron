@@ -15,7 +15,6 @@ namespace Survivatron.MapSpecs
     {
         /* Fields */
         public Map Current { get; set; }
-        public List<GameObject> MapObjects { get; private set; }
         private Dictionary<GOID, int[]> actionQueue = new Dictionary<GOID, int[]>();
 
         /* Singleton constructor and get. */
@@ -32,51 +31,29 @@ namespace Survivatron.MapSpecs
             return MCInstance;
         }
 
+        public void ProcessTurn()
+        { Current.ProcessTurn(); }
+
         private MapController(Map map)
-        {
-            Current = map;
-            MapObjects = FindObjects(Current.columns);
-            foreach (GameObject gObj in MapObjects)
-                SetGameObject(gObj);
-        }
+        { Current = map; }
 
         /* Interface Methods */
-        public virtual IMap GetZone(Rectangle rect)
-        { return Current.GetZone(rect); }
-
-        public IMap NewCrop(Rectangle rect)
-        {
-            return (Map)Current.NewCrop(rect.X, rect.Y, rect.Width, rect.Height);
-        }
-
-        public virtual Vector2 GetDimensions()
-        { return Current.GetDimensions(); }
+        public IMap Crop(Rectangle rect)
+        { return (Map)Current.Crop(rect.X, rect.Y, rect.Width, rect.Height); }
 
         // Only gets and sets to the gameobject list, not to the map itself.
         public virtual GameObject GetGameObject(GOID goid)
-        { return MapObjects.Find(new Predicate<GameObject>(gObj => gObj.ID.Equals(goid))); }
+        { return Current.MapObjects.Find(new Predicate<GameObject>(gObj => gObj.ID.Equals(goid))); }
 
         public virtual bool SetGameObject(GameObject newObject)
         {
             GameObject target = GetGameObject(newObject.ID);
-            if (target != null)
-            {
-                MapObjects.Remove(target);
-                Current.SetZone(target.Position, ToggleObject(target));
-            }
-
-            MapObjects.Add(newObject);
-            Current.SetZone(newObject.Position, ToggleObject(newObject));
-            Current.SetObject(newObject);
+            if (target == null)
+            { Current.SetObject(newObject); }
+            else
+            { target = newObject; }
 
             return true;
-        }
-
-        private IMap ToggleObject(GameObject gameObject)
-        {
-            Map gObjZone = (Map)Current.GetZone(new Rectangle((int)gameObject.Position.X, (int)gameObject.Position.Y, 1, 1));
-            gObjZone.columns[0].rows[0].ToggleObject(gameObject);
-            return (IMap)gObjZone;
         }
 
         public static bool HasSolid(Row row)
@@ -128,6 +105,7 @@ namespace Survivatron.MapSpecs
             SetGameObject(dynamic);
         }
 
+        /*
         public void MoveObject(GOID ID, Vector2 moveVector)
         {
             foreach (GameObject f in MapObjects)
@@ -156,5 +134,7 @@ namespace Survivatron.MapSpecs
                 }
             }
         }
+         *
+         */
     }
 }

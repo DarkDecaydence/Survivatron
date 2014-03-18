@@ -8,12 +8,15 @@ namespace Survivatron.GameActions
 {
     public class ActionSelf : IGameAction
     {
-        private Func<int> _command;
+        private int[] _args;
+        private Func<int[], int> _command;
 
         public virtual void Execute()
-        { _command(); }
+        { _command(_args); }
 
-        public ActionSelf(Func<int> command)
-        { _command = command; }
+        public ActionSelf(Func<int[], int> command, int[] args)
+        {
+            _args = args;
+            _command = command; }
     }
 }

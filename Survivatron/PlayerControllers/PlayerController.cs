@@ -36,7 +36,7 @@ namespace Survivatron.PlayerControllers
             // Setup player character controls.
             switch (playerNumber)
             {
-                case 1: charControls = new Keys[] { Keys.W, Keys.A, Keys.S, Keys.D, Keys.X }; break;
+                case 1: charControls = new Keys[] { Keys.W, Keys.A, Keys.S, Keys.D, Keys.C }; break;
                 case 2: charControls = new Keys[] { Keys.NumPad8, Keys.NumPad4, Keys.NumPad2, Keys.NumPad6, Keys.NumPad5 }; break;
                 default: charControls = new Keys[5]; break;
             }
@@ -51,76 +51,44 @@ namespace Survivatron.PlayerControllers
 
         public void Update()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.C))
+            Vector2 camVector = new Vector2();
+            Vector2 moveVector = new Vector2();
+            Keys[] pressedKeys = Keyboard.GetState().GetPressedKeys();
+
+            foreach (Keys k in pressedKeys)
             {
-                GameFrame.ChangeFrame(new Rectangle((int)Character.Position.X - GameFrame.dimensions.Width/2,(int)Character.Position.Y - GameFrame.dimensions.Height/2, GameFrame.dimensions.Width, GameFrame.dimensions.Height));
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
-            {
-                GameFrame.MoveFrame(0, -1);
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
-            {
-                GameFrame.MoveFrame(-1, 0);
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
-            {
-                GameFrame.MoveFrame(1, 0);
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
-            {
-                GameFrame.MoveFrame(0, 1);
-            }
-            /*
-             * The width and height of the gameframe is defined in tiles, not pixels, hench map.columns.length is used to determain deadzones.
-             */
-            //if (Keyboard.GetState().IsKeyDown(charControls[0]))
-            //{
-            //    var charX = (int)Character.Position.X;
-            //    var charY = Character.Position.Y; var gameH = GameFrame.dimensions.Height; var mapH = GameFrame.worldMap.columns[charX].rows.Length;
-            //    bool shouldCamMove = ViewFrameHandler.IsValid((int)charY, gameH, mapH);
-            //    var prevPos = Character.Position;
+                switch (k)
+                {
+                    /* Camera locked to character. */
+                    case Keys.C:
+                        GameFrame.CenterFrame(Character.Position); break;
+                    case Keys.W:
+                        camVector = Vector2.Add(camVector, new Vector2(0, -1)); break;
+                    case Keys.A:
+                        camVector = Vector2.Add(camVector, new Vector2(-1, 0)); break;
+                    case Keys.S:
+                        camVector = Vector2.Add(camVector, new Vector2(0, 1)); break;
+                    case Keys.D:
+                        camVector = Vector2.Add(camVector, new Vector2(1, 0)); break;
 
-            //    Interact(new Vector2(0, -1));
-
-            //    bool charMoved = Character.Position != prevPos;
-            //    if (shouldCamMove && charMoved) { GameFrame.MoveFrame(0, -1); }
-            //}
-            //if (Keyboard.GetState().IsKeyDown(charControls[1]))
-            //{
-            //    var charX = Character.Position.X; var gameW = GameFrame.dimensions.Width; var mapW = GameFrame.worldMap.columns.Length;
-            //    bool shouldCamMove = ViewFrameHandler.IsValid((int)charX, gameW, mapW);
-            //    var prevPos = Character.Position;
-
-            //    Interact(new Vector2(-1, 0));
-
-            //    bool charMoved = Character.Position != prevPos;
-            //    if (shouldCamMove && charMoved) { GameFrame.MoveFrame(-1, 0); }
-            //}
-            //if (Keyboard.GetState().IsKeyDown(charControls[2]))
-            //{
-            //    var charX = (int)Character.Position.X;
-            //    var charY = Character.Position.Y; var gameH = GameFrame.dimensions.Height; var mapH = GameFrame.worldMap.columns[charX].rows.Length;
-            //    bool shouldCamMove = ViewFrameHandler.IsValid((int)charY, gameH, mapH);
-            //    var prevPos = Character.Position;
-
-            //    Interact(new Vector2(0, 1));
-            //    bool charMoved = Character.Position != prevPos;
-            //    if (shouldCamMove && charMoved) { GameFrame.MoveFrame(0, 1); }
-            //}
-            //if (Keyboard.GetState().IsKeyDown(charControls[3]))
-            //{
-            //    var charX = Character.Position.X; var gameW = GameFrame.dimensions.Width; var mapW = GameFrame.worldMap.columns.Length;
-            //    bool shouldCamMove = ViewFrameHandler.IsValid((int)charX, gameW, mapW);
-            //    var prevPos = Character.Position;
-
-            //    Interact(new Vector2(1, 0));
-            //    bool charMoved = Character.Position != prevPos;
-            //    if (shouldCamMove && charMoved) { GameFrame.MoveFrame(1, 0); }
-            //}
-            //if (Keyboard.GetState().IsKeyDown(charControls[4]))
-            { //Character.Move('x'); 
+                    case Keys.Up:
+                        moveVector = Vector2.Add(moveVector, new Vector2(0, -1)); break;
+                    case Keys.Left:
+                        moveVector = Vector2.Add(moveVector, new Vector2(-1, 0)); break;
+                    case Keys.Down:
+                        moveVector = Vector2.Add(moveVector, new Vector2(0, 1)); break;
+                    case Keys.Right:
+                        moveVector = Vector2.Add(moveVector, new Vector2(1, 0)); break;
+                }
             }
+
+            camVector = Vector2.Clamp(camVector, new Vector2(-1, -1), new Vector2(1, 1));
+
+            Character.NextAction = ActionHandler.CreateMove(Character, moveVector);
+            if (camVector.Equals(new Vector2(0, 0)))
+            { GameFrame.CenterFrame(Character.Position); }
+            else
+            { GameFrame.MoveFrame(camVector); }
         }
     }
 }

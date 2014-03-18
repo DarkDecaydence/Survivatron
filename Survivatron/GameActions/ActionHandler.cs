@@ -10,23 +10,24 @@ namespace Survivatron.GameActions
 {
     public class ActionHandler
     {
-        public IGameAction CreateWait()
+        public static IGameAction CreateWait()
         {
-            Func<int> waitCommand = new Func<int>(() => { return 1; });
-            ActionSelf waitAction = new ActionSelf(waitCommand);
+            Func<int[], int> waitCommand = new Func<int[], int>(args => { return 1; });
+            ActionSelf waitAction = new ActionSelf(waitCommand, null);
             return (IGameAction)waitAction;
         }
 
-        public IGameAction CreateMove(Vector2 direction)
+        public static IGameAction CreateMove(GameObject target, Vector2 direction)
         {
-            Func<int[], GameObject, int> moveCommand =
-                new Func<int[], GameObject, int>((args, gObj) => {
-                    gObj.Position = Vector2.Add(gObj.Position, new Vector2(args[0], args[1]));
+            Func<int[], int> moveCommand =
+                new Func<int[], int>(args =>
+                {
                     MapController mc = MapController.GetInstance();
-                    mc.SetGameObject(gObj);
+                    GameObject gObj = mc.GetGameObject(new GOID(args[0], args[1]));
+                    gObj.Position = Vector2.Add(gObj.Position, new Vector2(args[2], args[3]));
                     return 1;
                 });
-            ActionTarget moveAction = new ActionTarget(moveCommand, new int[] { (int)direction.X, (int)direction.Y });
+            ActionSelf moveAction = new ActionSelf(moveCommand, new int[] { target.ID.ID, target.ID.subID, (int)direction.X, (int)direction.Y });
             return (IGameAction)moveAction;
         }
     }

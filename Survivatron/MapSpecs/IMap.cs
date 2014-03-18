@@ -9,8 +9,6 @@ namespace Survivatron.MapSpecs
 {
     public interface IMap
     {
-        IMap GetZone(Rectangle rect);
-        IMap SetZone(Vector2 origin, IMap newMap);
-        IMap ProcessTurn();
+        void ProcessTurn();
     }
 }
