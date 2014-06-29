@@ -22,7 +22,6 @@ namespace Survivatron.GameObjects.Dynamics
             base.Representation = (char)211;
             base.ID = new GOID(2, subID);
             base.FType = GameObjectType.CRITTER;
-            base.Solid = true;
             ActionPointMax = 100;
             actionPoints = ActionPointMax;
             AITactic = null;

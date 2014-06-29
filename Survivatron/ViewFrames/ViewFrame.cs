@@ -44,7 +44,15 @@ namespace Survivatron.ViewFrames
         public void MoveFrame(int x, int y)
         {
             var tempDim = dimensions;
-            tempDim.Offset(x, y);
+            tempDim.Offset(x, y); 
+            if (mc.Current.Locked) {
+                if (dimensions.X + x < 0) { tempDim.X = 0; }
+                if (dimensions.Y + y < 0) { tempDim.Y = 0; }
+                if (dimensions.X + dimensions.Width + x > mc.Current.Dimensions.X)
+                { tempDim.X = (int)mc.Current.Dimensions.X - dimensions.Width; }
+                if (dimensions.Y + dimensions.Height + y > mc.Current.Dimensions.X)
+                { tempDim.Y = (int)mc.Current.Dimensions.Y - dimensions.Height; }
+            }
 
             dimensions = tempDim;
         }

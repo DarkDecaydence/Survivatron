@@ -23,7 +23,8 @@ namespace Survivatron.MapSpecs
         {
             if (MCInstance == null)
             { throw new Exception("MCInstance is null. Check if constructed."); }
-            return MCInstance; }
+            return MCInstance;
+        }
 
         public static MapController Construct(Map map)
         {
@@ -33,6 +34,9 @@ namespace Survivatron.MapSpecs
 
         public void ProcessTurn()
         { Current.ProcessTurn(); }
+
+        public Vector2 GetDimensions()
+        { return Current.Dimensions; }
 
         private MapController(Map map)
         { Current = map; }
@@ -56,85 +60,40 @@ namespace Survivatron.MapSpecs
             return true;
         }
 
-        public static bool HasSolid(Row row)
+        public GameObjectMass HasSolid(int x, int y)
         {
-            foreach (GameObject g in row.Objects)
-              if (g.Solid) { return true; }
+            GameObject found = Current.MapObjects.Find(new Predicate<GameObject>(gObj => gObj.Position.Equals(new Vector2(x, y))));
 
-            return false;
-        }
-
-        public static List<GameObject> FindObjects(Column[] columns)
-        {
-            List<GameObject> found = new List<GameObject>();
-
-            foreach (Column c in columns)
-                foreach (Row r in c.rows)
-                    if (r.Objects.Count > 1)
-                        found.AddRange(r.Objects.GetRange(1, r.Objects.Count - 1));
-
-            return found;
+            if (found != null)
+            { return found.Mass; }
+            else return GameObjectMass.NONE;
         }
 
         // Frequency is measured in the chance that a tree will appear.
         // A tree cannot appear on a row that already contains a solid.
-        /*
-         * public void AddTrees(Map map, int frequency)
+        public void AddTrees(int frequency)
         {
-            if (frequency < 1) { return; }
-            Random rand = new Random();
+            Random newRand = new Random();
 
-            int width = map.columns.Length;
-            int height = map.columns[0].rows.Length;
-
-            int fields = width * height;
-
-            for (int treecount = fields / frequency; treecount != 0; treecount--)
+            for (int i = 0; i < (int)Current.Dimensions.X; i++)
             {
-                var nextTree = new Tree();
-                nextTree.Position = new Vector2(rand.Next(width), rand.Next(height));
-                while (!map.GetRow((int)nextTree.Position.X, (int)nextTree.Position.Y).isFree())
-                { nextTree.Position = new Vector2(rand.Next(width), rand.Next(height)); }
-                ToggleObject(nextTree);
+                for (int j = 0; j < (int)Current.Dimensions.Y; j++)
+                {
+                    if (HasSolid(i, j) == GameObjectMass.NONE && newRand.Next(frequency) == 0)
+                    {
+                        Tree newTree = new Tree();
+                        newTree.Position = new Vector2(i, j);
+                        SetGameObject(newTree);
+                    }
+                }
             }
-        }*/
+        }
 
         public void AddDynamic(Vector2 position, ref Dynamic dynamic)
         {
             dynamic.Position = position;
             SetGameObject(dynamic);
+            Current.Dynamics.Add(dynamic);
         }
-
-        /*
-        public void MoveObject(GOID ID, Vector2 moveVector)
-        {
-            foreach (GameObject f in MapObjects)
-            {
-                if (ID.Equals(f.ID))
-                {
-                    int x, y, newX, newY;
-                    x = (int)f.Position.X; y = (int)f.Position.Y;
-                    newX = x + (int)moveVector.X;
-                    newY = y + (int)moveVector.Y;
-
-                    // Figures out if the move is valid.
-                    // A valid move requires that newX is part of [0, columns[ and that newY is part of [0, columns[newX].rows[.
-                    // It also requires that the target row is free from solid objects.
-                    // TODO: Implement SOLID, SEMI-SOLID, NON-SOLID
-                    bool withinBounds = (newX >= 0 && newX < Current.columns.Length) && (newY >= 0 && newY < Current.columns[newX].rows.Length);
-                    bool free = false;
-                    if (withinBounds) { free = !MapController.HasSolid(Current.columns[newX].rows[newY]); }
-                    if (free)
-                    {
-                        Current.columns[newX].rows[newY].Objects.Add(f);
-                        Current.columns[x].rows[y].Objects.Remove(f);
-                        f.Position = new Vector2(newX, newY);
-                    }
-                    return;
-                }
-            }
-        }
-         *
-         */
     }
 }

@@ -10,10 +10,7 @@ namespace Survivatron
         public int ID, subID;
 
         public GOID(int id, int sid)
-        {
-            ID = id;
-            subID = sid;
-        }
+        { ID = id; subID = sid; }
 
         public override bool Equals(object obj)
         {

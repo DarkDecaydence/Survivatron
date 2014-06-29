@@ -10,7 +10,6 @@ namespace Survivatron.GameObjects.Dynamics
 {
     public class PlayerCharacter : Dynamic
     {
-        public override IGameAction NextAction { get; set; }
         public override int ActionPointMax { get; set; }
         private int actionPoints;
 
@@ -19,7 +18,6 @@ namespace Survivatron.GameObjects.Dynamics
             base.Representation = (char)16;
             base.ID = new GOID(1, owner);
             base.FType = GameObjectType.PLAYER;
-            base.Solid = true;
             ActionPointMax = 100;
             actionPoints = ActionPointMax;
             NextAction = ActionHandler.CreateWait();

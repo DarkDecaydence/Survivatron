@@ -7,4 +7,7 @@ namespace Survivatron.GameObjects
 {
     public enum GameObjectType
     { BASIC, PLAYER, CRITTER }
+
+    public enum GameObjectMass
+    { FULL, HALF, NONE }
 }

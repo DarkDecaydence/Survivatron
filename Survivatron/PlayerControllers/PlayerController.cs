@@ -59,7 +59,6 @@ namespace Survivatron.PlayerControllers
             {
                 switch (k)
                 {
-                    /* Camera locked to character. */
                     case Keys.C:
                         GameFrame.CenterFrame(Character.Position); break;
                     case Keys.W:
@@ -85,9 +84,7 @@ namespace Survivatron.PlayerControllers
             camVector = Vector2.Clamp(camVector, new Vector2(-1, -1), new Vector2(1, 1));
 
             Character.NextAction = ActionHandler.CreateMove(Character, moveVector);
-            if (camVector.Equals(new Vector2(0, 0)))
-            { GameFrame.CenterFrame(Character.Position); }
-            else
+            if (!camVector.Equals(new Vector2(0, 0)))
             { GameFrame.MoveFrame(camVector); }
         }
     }

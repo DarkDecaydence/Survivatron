@@ -17,22 +17,9 @@ namespace SurvivatronUnitTests
             Map newMap = new Map(20, 20);
             MapController mc = MapController.Construct(newMap);
 
-            Map testMap = (Map)mc.GetZone(new Rectangle(0, 0, 20, 20));
+            Map testMap = (Map)mc.Crop(new Rectangle(0, 0, 20, 20));
 
             Assert.IsTrue(newMap.Equals(testMap));
-        }
-
-        [TestMethod]
-        /* Tests the GetDimensions method to see it returns correct dimensions. */
-        public void TestMCGetDimensions()
-        {
-            Map newMap = new Map(20, 20);
-            MapController mc = MapController.Construct(newMap);
-
-            Vector2 testDims = mc.GetDimensions();
-
-            Assert.IsTrue(((int)testDims.X) == newMap.columns.Length &&
-                ((int)testDims.Y) == newMap.columns[0].rows.Length);
         }
 
         [TestMethod]

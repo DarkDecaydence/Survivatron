@@ -17,6 +17,7 @@ namespace Survivatron.GameActions
         public ActionSelf(Func<int[], int> command, int[] args)
         {
             _args = args;
-            _command = command; }
+            _command = command;
+        }
     }
 }

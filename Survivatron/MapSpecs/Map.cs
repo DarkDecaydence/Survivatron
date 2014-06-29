@@ -20,18 +20,22 @@ namespace Survivatron.MapSpecs
     {
         /* Object List */
         public List<GameObject> MapObjects { get; private set; }
+        public List<Dynamic> Dynamics { get; set; }
         public Vector2 Dimensions { get; private set; }
+        public bool Locked { get; private set; }
 
         /* Interface methods */
         public virtual void ProcessTurn()
         {
-            foreach (GameObject gObj in MapObjects)
+            var nextMap = (Map)this.Crop(0, 0, (int)Dimensions.X, (int)Dimensions.Y);
+            foreach (Dynamic gObj in Dynamics)
             {
-                if ((Dynamic)gObj == null)
-                { continue; }
-
-                ((Dynamic)gObj).NextAction.Execute();
-                ((Dynamic)gObj).NextAction = ActionHandler.CreateWait();
+                
+            }
+            foreach (Dynamic gObj in Dynamics)
+            {
+                gObj.NextAction.Execute();
+                gObj.NextAction = ActionHandler.CreateWait();
             }
         }
 
@@ -48,7 +52,8 @@ namespace Survivatron.MapSpecs
             if (mapCast == null)
                 return false;
 
-            return Dimensions.Equals(mapCast.Dimensions) && mapCast.MapObjects.Equals(this.MapObjects);
+            return mapCast.Dimensions.Equals(this.Dimensions);
+                //&& mapCast.MapObjects.Equals(this.MapObjects);
         }
 
         /* Constructor and help methods */
@@ -59,16 +64,19 @@ namespace Survivatron.MapSpecs
         public Map(int width, int height)
         {
             MapObjects = new List<GameObject>();
+            Dynamics = new List<Dynamic>();
             Dimensions = new Vector2(width, height);
+            Locked = true;
         }
 
         // Returns a cropped part of the current map, with the objects related to the cropped map.
         public IMap Crop(int x, int y, int width, int height)
         {
             Map croppedMap = new Map();
+            croppedMap.Dimensions = this.Dimensions;
             croppedMap.MapObjects = this.MapObjects.FindAll(new Predicate<GameObject>(gObj => 
-                gObj.Position.X > x && gObj.Position.X < x + width &&
-                gObj.Position.Y > y && gObj.Position.Y < y + height)
+                gObj.Position.X >= x && gObj.Position.X < x + width &&
+                gObj.Position.Y >= y && gObj.Position.Y < y + height)
                 );
             return (IMap)croppedMap;
         }

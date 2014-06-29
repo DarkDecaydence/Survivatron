@@ -27,6 +27,7 @@ namespace Survivatron
         private Texture2D[] tilesets = new Texture2D[3];
         private PlayerController[] players;
         private double prevDifference;
+        private int gameMode = 0;
 
         public Game1()
             : base()
@@ -50,7 +51,7 @@ namespace Survivatron
         {
             // TODO: Add your initialization logic here
             /* Map creation and initialization: */
-            Map gameMap = new Map();
+            Map gameMap = new Map(100, 100);
             MapController mc = MapController.Construct(gameMap);
 
             ViewFrame player1ViewFrame = new ViewFrame();
@@ -62,7 +63,7 @@ namespace Survivatron
             players[0].Character = pc;
 
             // Adding statics:
-            //mc.AddTrees(gameMap, 70);
+            mc.AddTrees(30);
 
             // Adding dynamics:
             Dynamic dynamic = (Dynamic)players[0].Character;
@@ -121,14 +122,16 @@ namespace Survivatron
             // TODO: Add your update logic here
             players[0].Update();
 
-            prevDifference += gameTime.ElapsedGameTime.TotalMilliseconds;
-            double TPS = 1000 / 20;
-            if (prevDifference > TPS)
+            if (gameMode == 0)
             {
-                MapController.MCInstance.ProcessTurn();
-                prevDifference = prevDifference % TPS;
+                prevDifference += gameTime.ElapsedGameTime.TotalMilliseconds;
+                double TPS = 1000 / 20;
+                if (prevDifference > TPS)
+                {
+                    MapController.MCInstance.ProcessTurn();
+                    prevDifference = prevDifference % TPS;
+                }
             }
-
 
             base.Update(gameTime);
         }
